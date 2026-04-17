@@ -1,0 +1,29 @@
+import { Meta, Canvas, Controls, Story } from '@storybook/addon-docs/blocks';
+import * as ButtonStories from './Button.stories';
+
+<Meta of={ButtonStories} />
+
+# Button
+
+A basic button component with three variants: **primary**, **secondary**, and **danger**.
+
+## Playground
+
+Interact with the controls below to see how props affect the component.
+
+<Canvas of={ButtonStories.Primary} />
+<Controls of={ButtonStories.Primary} />
+
+## Variants
+
+### Primary
+
+<Canvas of={ButtonStories.Primary} />
+
+### Secondary
+
+<Canvas of={ButtonStories.Secondary} />
+
+### Danger
+
+<Canvas of={ButtonStories.Danger} />
