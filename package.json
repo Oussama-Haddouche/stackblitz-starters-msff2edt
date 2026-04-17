@@ -2,6 +2,7 @@
     "name": "mdx-preview",
     "version": "1.0.0",
     "scripts": {
+        "postinstall": "npm run storybook",
         "storybook": "storybook dev -p 6006"
     },
     "dependencies": {
