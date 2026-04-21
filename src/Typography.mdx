@@ -1,0 +1,250 @@
+
+
+# Typography
+
+> **"All is in the title"** — Le système typographique de Slice structure la hiérarchie visuelle de toutes nos interfaces. Bien utilisée, la typographie guide l'utilisateur sans qu'il s'en rende compte.
+
+---
+
+## Vue d'ensemble
+
+Le composant `Typography` est le **bloc de base de tout texte** dans le design system Slice. Il encapsule l'ensemble des styles textuels définis dans nos tokens, et garantit la cohérence entre Figma, le code et les plateformes.
+
+Il expose deux familles de polices :
+
+| Famille | Police | Usage |
+|---------|--------|-------|
+| `familyHeading` | **Radikal** | Titres, Display (H1 → H5) |
+| `familyBody` | **Roboto** | Corps de texte, captions, actions |
+
+---
+
+## Quand utiliser quel style
+
+### Styles Heading — Radikal
+
+| Style | Taille | Usage recommandé |
+|-------|--------|-----------------|
+| **Display** | 28px / 36px | Hero sections, pages vides (empty states), titres de landing |
+| **H1 – Large Title** | 24px / 32px | Titre principal d'une page ou d'une vue |
+| **H2 – Title 1** | 20px / 26px | Titre de section majeure dans une page |
+| **H3 – Title 2** | 18px / 24px | Titre de sous-section, headers de panneaux |
+| **H4 – Subtitle 1** | 16px / 22px | Labels de groupe, titres de cards |
+| **H5 – Subtitle 2** | 15px / 22px | Sous-titres secondaires, légendes de section |
+
+### Styles Body — Roboto
+
+| Style | Taille | Usage recommandé |
+|-------|--------|-----------------|
+| **Body1** | 14px / 20px | Texte courant, descriptions, contenu principal |
+| **Body2** | 13px / 18px | Texte secondaire, métadonnées, contenu dense |
+| **Caption** | 12px / 16px | Labels de champs, timestamps, textes d'aide |
+| **Footer text** | 12px / 16px | Textes légaux, footers, notes de bas de page |
+| **Actions (S/M/L)** | 13–14px | Labels de boutons, chips, tags interactifs |
+
+---
+
+## Poids typographiques
+
+Chaque style supporte trois poids via les props `bold` et `medium` :
+
+```
+Regular  →  bold: false, medium: false   (défaut)
+Medium   →  bold: false, medium: true
+Bold     →  bold: true,  medium: false
+```
+
+> ⚠️ **`bold` et `medium` sont mutuellement exclusifs.** Ne pas passer les deux à `true` simultanément.
+
+---
+
+## ✅ Do — Bonnes pratiques
+
+### 1. Respecter la hiérarchie descendante
+
+Une page bien structurée ne dépasse pas **3 niveaux de titres** visibles simultanément.
+
+```
+✅  H1 → H2 → Body1
+✅  Display → H3 → Body2 → Caption
+```
+
+### 2. Utiliser les styles Actions pour tout élément interactif
+
+Les labels de boutons doivent systématiquement utiliser le style **Actions**, jamais Body1 ou Body2.
+
+```jsx
+// ✅ Correct
+<Typography style="Actions (Button - Chips)" sizeActions="M" label="Confirmer" />
+
+// ❌ À éviter
+<Typography style="Body1" label="Confirmer" />
+```
+
+### 3. Faire varier le poids pour créer de la hiérarchie dans un même niveau
+
+Quand deux textes partagent le même style, le poids permet de distinguer l'information principale de l'info secondaire.
+
+```
+✅  H4 Bold   →  Nom du produit
+    H4 Regular →  Catégorie du produit
+```
+
+### 4. Utiliser Caption pour les textes d'aide et labels de formulaires
+
+```jsx
+// ✅ Label de champ
+<Typography style="Caption" label="Adresse email *" />
+
+// ✅ Message d'aide
+<Typography style="Caption" label="Format attendu : prenom.nom@domaine.fr" />
+```
+
+### 5. Utiliser Footer text uniquement pour les contenus de bas de page ou légaux
+
+```jsx
+// ✅
+<Typography style="Footer text" label="© 2026 Slice. Tous droits réservés." />
+```
+
+---
+
+## ❌ Don't — Erreurs fréquentes
+
+### 1. Ne pas sauter de niveaux dans la hiérarchie
+
+```
+❌  Display → H4 → Caption   (trop de saut)
+✅  Display → H2 → Body1
+```
+
+### 2. Ne pas utiliser Body pour les boutons
+
+Le style Body n'a pas les bonnes proportions pour les éléments interactifs (hauteur de ligne, espacement).
+
+```jsx
+// ❌ Mauvais usage
+<Typography style="Body2" label="Annuler" />
+
+// ✅ Correct
+<Typography style="Actions (Button - Chips)" sizeActions="S" label="Annuler" />
+```
+
+### 3. Ne pas combiner bold et medium
+
+```jsx
+// ❌ Comportement indéfini
+<Typography bold={true} medium={true} />
+
+// ✅
+<Typography bold={true} />
+// ou
+<Typography medium={true} />
+```
+
+### 4. Ne pas utiliser Display dans un contexte de contenu dense
+
+Le style Display (28px) est réservé aux moments d'emphase forte. Dans un tableau, une liste ou un formulaire, il écrase tout le reste.
+
+```
+❌  Display dans un tableau de données
+❌  Display comme titre de card dans une liste
+✅  Display comme titre de page d'accueil ou empty state
+```
+
+### 5. Ne pas utiliser Caption comme texte courant
+
+Caption à 12px passe sous le seuil de lisibilité confortable pour des contenus longs.
+
+```
+❌  Caption pour un paragraphe de description
+✅  Caption pour un timestamp, un label, une note
+```
+
+---
+
+## Combinaisons recommandées
+
+Ces paires de styles ont été validées dans nos interfaces. Elles constituent la base de nos patterns.
+
+### Page standard — vue liste ou dashboard
+
+```
+H1 Bold         →  Titre de la page
+H3 Regular      →  Titre de catégorie
+H5 Regular      →  Titre de section
+Body1 Regular   →  Contenu principal
+Caption Medium  →  Labels et métadonnées
+```
+
+### Card de contenu
+
+```
+H4 Medium       →  Titre de la card
+Body2 Regular   →  Description ou résumé
+Caption Regular →  Date, auteur, tag
+```
+
+### Formulaire
+
+```
+H4 Bold         →  Titre du formulaire
+Body1 Regular   →  Instructions
+Caption Medium  →  Label de champ
+Body2 Regular   →  Valeur saisie
+Caption Regular →  Message d'aide ou d'erreur
+```
+
+### Empty state
+
+```
+Display Medium  →  Message principal ("Aucun résultat")
+Body1 Regular   →  Explication ou action suggérée
+Actions M       →  Label du CTA
+```
+
+---
+
+## Accessibilité
+
+- **Contraste minimum** : tous les styles utilisent `--text/primary` (#323741 sur fond blanc = ratio 8.5:1 ✅ WCAG AA et AAA)
+- **Ne pas utiliser la typographie seule** pour transmettre une information critique — toujours combiner avec une icône ou une couleur sémantique
+- **Caption et Footer text à 12px** doivent rester sur fond clair uniquement. Ne pas les utiliser sur des fonds colorés ou à faible contraste
+- **Les niveaux H1–H3** doivent correspondre à la hiérarchie sémantique HTML (`h1`, `h2`, `h3`) pour les lecteurs d'écran
+
+---
+
+## Tokens de référence
+
+| Token | Valeur résolue |
+|-------|---------------|
+| `--typography/familyheading` | Radikal |
+| `--typography/familybody` | Roboto |
+| `--typography/display/size` | 28px |
+| `--typography/h1---large-title/size` | 24px |
+| `--typography/h2---title-1/size` | 20px |
+| `--typography/h3---title-2/size` | 18px |
+| `--typography/h4---subtitle-1/size` | 16px |
+| `--typography/h5---subtitle-2/size` | 15px |
+| `--typography/body-1/size` | 14px |
+| `--typography/body-2/size` | 13px |
+| `--typography/caption/size` | 12px |
+| `--typography/footer-text/size` | 12px |
+| `--text/primary` | #323741 |
+
+---
+
+## Props reference
+
+| Prop | Type | Défaut | Description |
+|------|------|--------|-------------|
+| `style` | `string` | `"Display"` | Style typographique à appliquer |
+| `label` | `string` | `"Slice is good"` | Contenu textuel affiché |
+| `bold` | `boolean` | `false` | Active le poids Bold. Exclusif avec `medium` |
+| `medium` | `boolean` | `false` | Active le poids Medium. Exclusif avec `bold` |
+| `sizeActions` | `"S" \| "M" \| "L"` | `"S"` | Taille du style Actions uniquement |
+
+---
+
+*Documentation générée depuis Figma — Slice DS · `BvaJQ4Dyn1dCatdHT8PvpF` · node `0:756`*
+*Dernière mise à jour : Mars 2026*
